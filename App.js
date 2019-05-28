@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Button, Dimensions} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button, Dimensions, Image, Switch} from 'react-native';
 import {
   Player,
   Recorder,
@@ -40,10 +40,26 @@ export default class App extends Component {
     this.state = {
       birdVolume: 0.5,
       wavesVolume: 0.5,
-      rainVolume: 0.5
+      rainVolume: 0.5,
+      switchValue: false,
     }
   }
-  
+
+  switchToggle(){
+    if (this.state.switchValue == false ){
+      this.playButton()
+    }else {
+      rain.stop()
+      waves.stop()
+      bird.stop()
+    }
+
+
+    this.setState({switchValue: !this.state.switchValue})
+  }
+  // this.playButton()
+  // this.setState({switchValue: !this.state.switchValue})
+
 
   birdSliderChange(value) {
     if (value < 0.08){
@@ -71,7 +87,7 @@ export default class App extends Component {
   }
   
   playButton(){
-    rain.play();
+    rain.setNumberOfLoops(100).play();
     waves.play()  
     bird.play()
   }
@@ -79,6 +95,16 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+
+        <Switch
+          ios_backgroundColor={'#000'}
+          trackColor={'#000'}
+          tintColor={'#000'}
+          // thumbColor={'#000'}
+          // thumbTintColor={'#000'}
+          onValueChange={() => this.switchToggle()}
+          value={this.state.switchValue}
+        />
 
         <Button
           title="Play"
@@ -108,7 +134,6 @@ export default class App extends Component {
           onValueChange={this.rainSliderChange.bind(this)}
           style={{width:width-100}}
         />
-
       </View>
     );
   }
